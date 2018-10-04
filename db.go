@@ -5,6 +5,8 @@ import (
 	"sync"
 
 	//Mysql driver for gorm
+	"os"
+
 	_ "github.com/go-sql-driver/mysql"
 	"github.com/jinzhu/gorm"
 	"github.com/pkg/errors"
@@ -48,7 +50,8 @@ func Instance() *gorm.DB {
 		var err error
 		instance, err = CreateInstance(Username, Password, Database, Host, Port, DebugLog)
 		if err != nil {
-			panic(fmt.Sprintf("Can't connect to database [%s]", err))
+			fmt.Sprintf("Can't connect to database [%s]", err)
+			os.Exit(1)
 		}
 	})
 	return instance
