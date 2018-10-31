@@ -50,7 +50,8 @@ func Instance() *gorm.DB {
 		var err error
 		instance, err = CreateInstance(Username, Password, Database, Host, Port, DebugLog)
 		if err != nil {
-			fmt.Sprintf("Can't connect to database [%s]", err)
+			fmt.Printf("Error [%s]\n", err)
+			fmt.Printf("Username [%s], Password [%s], Db [%s], Host [%s:%s]\n", Username, Password, Database, Host, Port)
 			os.Exit(1)
 		}
 	})
