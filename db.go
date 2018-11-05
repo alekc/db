@@ -2,6 +2,7 @@ package db
 
 import (
 	"fmt"
+	"github.com/davecgh/go-spew/spew"
 	"sync"
 
 	//Mysql driver for gorm
@@ -9,7 +10,6 @@ import (
 
 	_ "github.com/go-sql-driver/mysql"
 	"github.com/jinzhu/gorm"
-	"github.com/pkg/errors"
 )
 
 var (
@@ -51,7 +51,10 @@ func Instance() *gorm.DB {
 		instance, err = CreateInstance(Username, Password, Database, Host, Port, DebugLog)
 		if err != nil {
 			fmt.Printf("Error [%s]\n", err)
-			fmt.Printf("Username [%s], Password [%s], Db [%s], Host [%s:%d]\n", Username, Password, Database, Host, Port)
+			if DebugLog {
+				fmt.Printf("Username [%s], Password [%s], Db [%s], Host [%s:%d]\n", Username, Password, Database, Host, Port)
+				spew.Dump(err)
+			}
 			os.Exit(1)
 		}
 	})
@@ -74,7 +77,7 @@ func CreateInstance(username, password, dbName, host string, port int, debugLog 
 
 	dbManager, err := gorm.Open("mysql", connectionString)
 	if err != nil {
-		return nil, errors.New("Cannot connect to database")
+		return nil, err
 	}
 	//if debugLog {
 	//	dbManager.LogMode(true)
