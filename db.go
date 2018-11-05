@@ -51,7 +51,7 @@ func Instance() *gorm.DB {
 		instance, err = CreateInstance(Username, Password, Database, Host, Port, DebugLog)
 		if err != nil {
 			fmt.Printf("Error [%s]\n", err)
-			fmt.Printf("Username [%s], Password [%s], Db [%s], Host [%s:%s]\n", Username, Password, Database, Host, Port)
+			fmt.Printf("Username [%s], Password [%s], Db [%s], Host [%s:%d]\n", Username, Password, Database, Host, Port)
 			os.Exit(1)
 		}
 	})
