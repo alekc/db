@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"github.com/davecgh/go-spew/spew"
 	"sync"
+	"time"
 
 	//Mysql driver for gorm
 	"os"
@@ -39,6 +40,15 @@ var (
 
 	//DebugLog for now unused
 	DebugLog bool
+
+	//Maximum open connections which app can have
+	MaxOpenConnections = 10
+
+	//
+	MaxIdleConnections = 5
+
+	//
+	ConnMaxLifeTime = 10
 )
 
 var instance *gorm.DB
@@ -57,6 +67,9 @@ func Instance() *gorm.DB {
 			}
 			os.Exit(1)
 		}
+		instance.DB().SetMaxOpenConns(MaxOpenConnections)
+		instance.DB().SetMaxIdleConns(MaxIdleConnections)
+		instance.DB().SetConnMaxLifetime(time.Duration(ConnMaxLifeTime) * time.Second)
 	})
 	return instance
 }
