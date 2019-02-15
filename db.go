@@ -60,7 +60,7 @@ func Instance() *gorm.DB {
 		var err error
 		instance, err = CreateInstance(Username, Password, Database, Host, Port, DebugLog)
 		if err != nil {
-			fmt.Printf("Error [%s]\n", err)
+			fmt.Printf("Error on database instance creation. [%s]\n", err)
 			if DebugLog {
 				fmt.Printf("Username [%s], Password [%s], Db [%s], Host [%s:%d]\n", Username, Password, Database, Host, Port)
 				spew.Dump(err)
