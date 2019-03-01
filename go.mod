@@ -1,4 +1,4 @@
-module stash.binweevils.com/go/db
+module github.com/alekc/db
 
 require (
 	cloud.google.com/go v0.31.0 // indirect
