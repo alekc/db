@@ -2,6 +2,7 @@ package db
 
 import (
 	"fmt"
+	"github.com/jmoiron/sqlx"
 	"sync"
 	"time"
 
@@ -48,9 +49,12 @@ var (
 
 	//
 	ConnMaxLifeTime = 10
+
+
 )
 
 var instance *gorm.DB
+var sqlxInstance *sqlx.DB
 var dbOnce sync.Once
 
 //Returns (or creates) the singleton instance
@@ -68,8 +72,20 @@ func Instance() *gorm.DB {
 		instance.DB().SetMaxOpenConns(MaxOpenConnections)
 		instance.DB().SetMaxIdleConns(MaxIdleConnections)
 		instance.DB().SetConnMaxLifetime(time.Duration(ConnMaxLifeTime) * time.Second)
+
+		sqlxInstance = sqlx.NewDb(instance.DB(), "mysql")
+		err = sqlxInstance.Ping()
+		if err != nil || sqlxInstance.Ping() != nil{
+			fmt.Printf("Error on sqlx instance creation. [%s]\n", err)
+			os.Exit(2)
+		}
 	})
 	return instance
+}
+
+//SqlX returns instance of sqlx
+func SqlX() * sqlx.DB{
+	return sqlxInstance
 }
 
 // CreateInstance
